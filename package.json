@@ -1,6 +1,6 @@
 {
-  "name": "news-data-mcp-server",
-  "version": "1.0.0",
+  "name": "news-mcp-server",
+  "version": "0.0.2",
   "description": "MCP server for news using newsdata.io",
   "type": "module",
   "main": "dist/index.js",
