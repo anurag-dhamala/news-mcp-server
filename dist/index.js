@@ -3,7 +3,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from "zod";
 import { getNews, getNewsSources } from './api.js';
 const server = new McpServer({
-    name: 'news-data-mcp-server',
+    name: 'news-mcp-server',
     version: '1.0.0',
     capabilities: {
         resources: {},
