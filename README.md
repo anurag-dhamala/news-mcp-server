@@ -32,7 +32,7 @@ You can also use <b>npx</b>.
     "news": {
         "command": "path_to_your_npx",
         "args": [
-            "news-data-mcp-server"
+            "news-mcp-server"
         ],
         "env": {
             "NEWS_API_KEY": "API_KEY_FROM_NEWS_DATA",
