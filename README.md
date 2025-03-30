@@ -49,8 +49,10 @@ You can also use <b>npx</b>.
 
 ## Example Prompts
 
-Give me top news headlines from Japan in Japanese language.
+Give me latest news from USA trending today.
 
-Give me news sources from Thailand.
+Give me top news headlines from Nepal in Nepali language.
+
+Give me news sources from Bhutan.
 
 ...
