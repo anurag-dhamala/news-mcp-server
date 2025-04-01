@@ -2,6 +2,8 @@
 
 MCP server for getting up-to-date news with newsdata.io
 
+https://www.pulsemcp.com/servers/anurag-dhamala-newsdata
+
 ## Setup
 
 If you clone this repo, then you can use the config below:
