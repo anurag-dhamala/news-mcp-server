@@ -57,4 +57,8 @@ Give me top news headlines from Nepal in Nepali language.
 
 Give me news sources from Bhutan.
 
+Give me latest news about Lionel Messi.
+
+Give me latest crypto news.
+
 ...
