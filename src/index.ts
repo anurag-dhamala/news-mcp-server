@@ -68,8 +68,8 @@ server.tool(
     }, 
     async ({countryCode, language}) => {
        const location = countryCode?.toLowerCase() ?? "";
-    const alerts = await getNewsSources(location, language);
-    if(!alerts) {
+    const sources = await getNewsSources(location, language);
+    if(!sources) {
         return {
             content: [
                 {type: 'text',
@@ -77,7 +77,7 @@ server.tool(
             ]
         }
     }
-    if(alerts.results.length <=0) {
+    if(sources.results.length <=0) {
         return {
             content:[
                 {type: "text",
@@ -86,7 +86,7 @@ server.tool(
         }
     }
     let formatterNewsText="";
-    alerts.results.map(source=> {
+    sources.results.map(source=> {
         formatterNewsText = formatterNewsText+`\n
         News: ${source.name}\n
         Summary: ${source.description}\n
