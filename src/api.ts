@@ -1,9 +1,9 @@
 import {NEWS_API_KEY, NEWS_BASE_URL} from "./envReader.js"
 import {NewsResponse, NewsSourcesResponse} from './types/interfaces.js';
 
-export const getNews = async (countryCode: string, language: string): Promise<NewsResponse | null> => {
+export const getNews = async (countryCode: string, language: string, query: string): Promise<NewsResponse | null> => {
     try {
-        const res = await fetch(`${NEWS_BASE_URL}/api/1/latest?country=${countryCode}&language=${language}&apiKey=${NEWS_API_KEY}`);
+        const res = await fetch(`${NEWS_BASE_URL}/api/1/latest?country=${countryCode}&language=${language}&q=${query}&apiKey=${NEWS_API_KEY}`);
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }

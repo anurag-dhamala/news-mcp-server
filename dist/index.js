@@ -10,12 +10,13 @@ const server = new McpServer({
         tools: {}
     }
 });
-server.tool("get-latest-news", "Get latest news alerts based on country code (e.g. us, in, au), or language (e.g. fr,ne,en)", {
-    countryCode: z.string().length(2).describe("Two letter country code (e.g. np, us, au)").optional().default(""),
+server.tool("get-latest-news", "Fetch the latest news. Optionally, filter by country code (e.g. us, in, au), language (e.g. ne, en, fr) or word (e.g. pizza, JohnDoe) for more tailored news.", {
+    countryCode: z.string().length(2).describe("Two letter country code (e.g. np, us, au)").optional().default("us"),
     language: z.string().length(2).describe("Two letter language code (e.g. ne, en, fr)").optional().default("en"),
-}, async ({ countryCode, language }) => {
+    query: z.string().describe("Search news articles for specific keywords or phrases present in the news title, content, URL, meta keywords and meta description. The value must be URL-encoded and the maximum character limit permitted is 100 characters.").optional().default(""),
+}, async ({ countryCode, language, query }) => {
     const location = countryCode?.toLowerCase() ?? "";
-    const alerts = await getNews(location, language);
+    const alerts = await getNews(location, language, query);
     if (!alerts) {
         return {
             content: [
@@ -49,7 +50,7 @@ server.tool("get-latest-news", "Get latest news alerts based on country code (e.
         ]
     };
 });
-server.tool("get-news-sources", "Get news sources based on country code (e.g. us, in, au), or language (e.g. fr,ne,en)", {
+server.tool("get-news-sources", "Fetch available news sources. Optionally, filter by country code (e.g. us, in, au) or language (e.g. ne, en, fr) for more tailored output.", {
     countryCode: z.string().length(2).describe("Two letter country code (e.g. np, us, au)").optional().default(""),
     language: z.string().length(2).describe("Two letter language code (e.g. ne, en, fr)").optional().default("en"),
 }, async ({ countryCode, language }) => {
