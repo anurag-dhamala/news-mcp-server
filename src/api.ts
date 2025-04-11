@@ -26,3 +26,16 @@ export const getNewsSources = async (countryCode: string, language: string): Pro
         return null;
     }
 }
+
+export const getCryptoNews= async (coin: string, language: string, tags: string): Promise<NewsResponse | null> => {
+    try {
+        const res = await fetch(`${NEWS_BASE_URL}/api/1/crypto?coin=${coin}&language=${language}&apiKey=${NEWS_API_KEY}`);
+        if (!res.ok) {
+            throw new Error(`HTTP error while fetching crypto news! status: ${res.status}`);
+        }
+        return await res.json();
+    } catch (error) {
+        console.error('Error fetching crypto news:', error);
+        return null;
+    }
+}

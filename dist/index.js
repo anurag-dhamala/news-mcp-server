@@ -1,7 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from "zod";
-import { getNews, getNewsSources } from './api.js';
+import { getCryptoNews, getNews, getNewsSources } from './api.js';
 const server = new McpServer({
     name: 'news-mcp-server',
     version: '1.0.0',
@@ -54,8 +54,8 @@ server.tool("get-news-sources", "Get news sources based on country code (e.g. us
     language: z.string().length(2).describe("Two letter language code (e.g. ne, en, fr)").optional().default("en"),
 }, async ({ countryCode, language }) => {
     const location = countryCode?.toLowerCase() ?? "";
-    const alerts = await getNewsSources(location, language);
-    if (!alerts) {
+    const sources = await getNewsSources(location, language);
+    if (!sources) {
         return {
             content: [
                 { type: 'text',
@@ -63,7 +63,7 @@ server.tool("get-news-sources", "Get news sources based on country code (e.g. us
             ]
         };
     }
-    if (alerts.results.length <= 0) {
+    if (sources.results.length <= 0) {
         return {
             content: [
                 { type: "text",
@@ -72,11 +72,49 @@ server.tool("get-news-sources", "Get news sources based on country code (e.g. us
         };
     }
     let formatterNewsText = "";
-    alerts.results.map(source => {
+    sources.results.map(source => {
         formatterNewsText = formatterNewsText + `\n
         News: ${source.name}\n
         Summary: ${source.description}\n
         Url: ${source.url}
+        `;
+    });
+    return {
+        content: [
+            {
+                type: "text",
+                text: formatterNewsText
+            }
+        ]
+    };
+});
+server.tool("get-latest-crypto-news", "Fetch the latest cryptocurrency news. Optionally, filter by specific coin (e.g. btc, eth,usdt,bnb), language (e.g. ne, en, fr) or tag (e.g. blockchain, liquidity, scam) for more tailored updates.", {
+    coin: z.string().describe("Search the news articles for specific crypto coins using their short forms only. You can add up to 5 coins in a single query. (e.g coin=btc, coin=eth,usdt,bnb").optional().default(""),
+    language: z.string().length(2).describe("Two letter language code (e.g. ne, en, fr)").optional().default("en"),
+    tags: z.string().describe("Search the news articles for specific Crypto AI-classified tags. You can add up to 5 tags in a single query. (e.g. tag=blockchain, tag=liquidity,scam)").optional().default(""),
+}, async ({ coin, language, tags }) => {
+    const cryptoNews = await getCryptoNews(coin, language, tags);
+    if (!cryptoNews) {
+        return {
+            content: [
+                { type: 'text',
+                    text: 'Failed to retrieve crypto news' }
+            ]
+        };
+    }
+    if (cryptoNews.results.length <= 0) {
+        return {
+            content: [
+                { type: "text",
+                    text: "No crypto news available" }
+            ]
+        };
+    }
+    let formatterNewsText = "";
+    cryptoNews.results.map(article => {
+        formatterNewsText = formatterNewsText + `\n
+        News: ${article.title}\n
+        Summary: ${article.description}\n
         `;
     });
     return {

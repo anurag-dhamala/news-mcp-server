@@ -5,8 +5,7 @@ export const getNews = async (countryCode, language) => {
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
         }
-        const topNews = await res.json();
-        return topNews;
+        return await res.json();
     }
     catch (error) {
         console.error('Error fetching news:', error);
@@ -19,11 +18,23 @@ export const getNewsSources = async (countryCode, language) => {
         if (!res.ok) {
             throw new Error(`HTTP error while fetching sources! status: ${res.status}`);
         }
-        const newsSources = await res.json();
-        return newsSources;
+        return await res.json();
     }
     catch (error) {
         console.error('Error fetching news sources:', error);
+        return null;
+    }
+};
+export const getCryptoNews = async (coin, language, tags) => {
+    try {
+        const res = await fetch(`${NEWS_BASE_URL}/api/1/crypto?coin=${coin}&language=${language}&apiKey=${NEWS_API_KEY}`);
+        if (!res.ok) {
+            throw new Error(`HTTP error while fetching crypto news! status: ${res.status}`);
+        }
+        return await res.json();
+    }
+    catch (error) {
+        console.error('Error fetching crypto news:', error);
         return null;
     }
 };
